@@ -1,0 +1,11 @@
+PROJECT_NAME = "Enterprise Search"
+VERSION = "1.0"
+AUTHOR = "Vaishali"
+EMBEDDING_MODEL = "gemini-embedding-001"
+MODEL= "gemini-3.5-flash"
+COLLECTION_NAME = 'ENTERPRISE_RECORDS'
+DATABASE_PATH = './databases/enterprise-records'
+BANNER_WIDTH = 40
+QUERY='What expenses require approval?'
+DEPARTMENT = 'Finance'
+ACCESS_LEVEL = 'manager'

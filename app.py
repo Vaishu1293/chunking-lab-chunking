@@ -1,39 +1,35 @@
-"""Knowledge Search Application Entry Point."""
-
-from config import QUERY, DEPARTMENT, ACCESS_LEVEL
+"""Semantic Chunking Verification App."""
 from utils.environment import get_setup_components
-from utils.display import banner_workers
-from workflows.enterprise_workflow import (
-    ingest_enterprise_records,
-    search_enterprise,
-    answer_question,
-)
-from data.enterprise_data import ENTERPRISE_RECORDS
+from chunkers.semantic_chunker import semantic_chunk_text
 
+sample_doc = """
+Python is widely used for AI development.
+NumPy provides numerical array operations.
+PyTorch is commonly used to train neural networks.
 
-def main() -> None:
-    """Run the Knowledge Search application."""
-    banner_workers()
-    
-    # Initialize environment clients
-    _, gemini_client, _, collection = get_setup_components()
-    print('Gemini Client: OK' if gemini_client else 'Error connecting Gemini Client')
-    print("Collection:", collection.name)
-    
-    # 1. Ingest Data
-    ingest_enterprise_records(gemini_client, collection, ENTERPRISE_RECORDS)
-    
-    # 2. Search Vector Store
-    query = QUERY
-    department = DEPARTMENT
-    access_level = ACCESS_LEVEL
-    print(f"\n[?] Executing Query: '{query}'")
-    search_results = search_enterprise(gemini_client, collection, query, department, access_level, top_k=3)
-    
-    # 3. Generate Grounded Answer
-    print("\n--- GROUNDED ANSWER ---")
-    answer = answer_question(gemini_client, query, search_results)
-    print(answer)
+Full-time employees receive 20 days of paid annual leave per year.
+Leave requests must be submitted through the corporate HR portal.
+Managers approve requests exceeding standard limits.
+
+Vector databases store high-dimensional embeddings efficiently.
+ChromaDB performs efficient vector similarity search for RAG.
+"""
+
+def main():
+    _, gemini_client, _, _ = get_setup_components()
+    print("Gemini Client: OK\n")
+
+    print("--- EVALUATING ADJACENT SENTENCE SIMILARITY ---")
+    chunks = semantic_chunk_text(gemini_client, sample_doc, similarity_threshold=0.65)
+
+    print(f"\n========================================")
+    print(f"SEMANTIC CHUNKS GENERATED ({len(chunks)})")
+    print(f"========================================")
+
+    for idx, chunk in enumerate(chunks, 1):
+        print(f"\nChunk {idx}")
+        print("-" * 40)
+        print(chunk)
 
 
 if __name__ == "__main__":

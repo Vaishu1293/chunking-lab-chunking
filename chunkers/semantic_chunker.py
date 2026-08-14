@@ -55,8 +55,8 @@ def semantic_chunk_text(
         similarity = cosine_similarity(embeddings[i - 1], embeddings[i])
 
         # Debug print to observe exact semantic similarity transitions
-        print(f"   [Similarity] S{i-1} ↔ S{i}: {similarity:.4f} "
-              f"{'(BREAK)' if similarity < similarity_threshold else '(KEEP)'}")
+        # print(f"   [Similarity] S{i-1} ↔ S{i}: {similarity:.4f} "
+        #       f"{'(BREAK)' if similarity < similarity_threshold else '(KEEP)'}")
 
         if similarity >= similarity_threshold:
             # Same topic -> Keep sentence in current chunk

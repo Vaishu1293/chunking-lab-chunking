@@ -22,7 +22,7 @@ def load_genai_client(api_key: str) -> genai.Client:
     return client
 
 
-def generate_response(client: genai.Client, model: str, contents: str) -> str:
+def generate_response(client: genai.Client, model: str, contents: str, config) -> str:
     """Generates a text completion response using a Gemini LLM.
 
     Args:
@@ -35,7 +35,8 @@ def generate_response(client: genai.Client, model: str, contents: str) -> str:
     """
     response = client.models.generate_content(
         model=model,
-        contents=contents
+        contents=contents,
+        config=config
     )
     return response.text
 
